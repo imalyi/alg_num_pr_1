@@ -13,7 +13,7 @@
 
 \begin{document}
 
-\maketiwtle
+\maketitle
 
 \section{Treść zadania}
 Obliczyć $\sqrt{23}$ za pomocą wielomianów interpolacyjnych dla danych z~tabeli:
@@ -31,7 +31,20 @@ Sprawdzić, jaki podzbiór danych z~tabeli daje najlepsze przybliżenie dokładn
 \section{Teoretyczny opis metody}
 W~realizacji naszego projektu, w~celu obliczenia przybliżonej wartości pierwiastka zastosujemy wielomian interpolacyjny Lagrange'a. Wielomian ten będzie konstruowany na podstawie wybranego podzbioru danych z~tabeli, które zostaną wybrane w~sposób optymalny, tak aby przybliżenie było jak najbardziej dokładne.
 
-\subsection{Teoretyczny opis wielomianu interpolacyjnego w postaci Lagrange'a}
+\subsection{Wielomian interpolacyjny w postaci Lagrange'a}
+Niech $n+1$ będzie liczbą węzłów interpolacyjnych, a~$x_0,x_1,\ldots,x_n$ są ich wartościami. Niech $f$ będzie funkcją, którą chcemy interpolować na przedziale $[x_0,x_n]$. Wielomian interpolacyjny $P(x)$ dla $f$ w~węzłach $x_0,x_1,\ldots,x_n$ to unikalny wielomian stopnia co najwyżej $n$, który spełnia $P(x_i) = f(x_i)$ dla $i=0,1,\ldots,n$.
+
+Metoda Lagrange'a polega na wyznaczeniu wielomianu interpolacyjnego za pomocą wzoru:
+
+\begin{equation*}
+P(x) = \sum_{i=0}^{n} f(x_i) L_i(x)
+\end{equation*}
+
+gdzie $L_i(x)$ to $i$-ty wielomian Lagrange'a, zdefiniowany jako:
+
+\begin{equation*}
+L_i(x) = \prod_{j=0, j\neq i}^{n} \frac{x-x_j}{x_i-x_j}
+\end{equation*}
 
 \begin{example}
 
@@ -64,7 +77,7 @@ co jest dość odległym przybliżeniem wartości $\sqrt{23}$.
 
 \end{example}
 
-\section{Opis implementacji}
+\section{Opis implementacji algorytmu}
 \section{Instrukcja obsługi programu}
 \section{Raport z~demonstracji}
 \section{Wnioski i~interpretacja wyników}
