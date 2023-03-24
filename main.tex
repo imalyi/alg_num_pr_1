@@ -1,0 +1,73 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+
+\usepackage{indentfirst}
+\usepackage{polski}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newtheorem{example}{Przykład}
+
+\title{Dokumentacja projektu zespołowego nr 1}
+\author{Anna Ćwiklińska, Krystian Gronkowski, Ihor Malyi}
+\date{Marzec 2023}
+
+\begin{document}
+
+\maketiwtle
+
+\section{Treść zadania}
+Obliczyć $\sqrt{23}$ za pomocą wielomianów interpolacyjnych dla danych z~tabeli:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|llllllllll}
+$x$    & 0 & 1 & 4 & 9 & 16 & 25 & 36 & 49 & 64 & 81 \\ \hline
+$f(x)$ & 0 & 1 & 2 & 3 & 4  & 5  & 6  & 7  & 8  & 9  \\
+\end{tabular}
+\end{table}
+
+Sprawdzić, jaki podzbiór danych z~tabeli daje najlepsze przybliżenie dokładnej wartości pierwiastka (czyli dla jakiego zestawu tych węzłów wielomian Lagrange’a przebiega najbliżej punktu $(23, \sqrt{23})$).
+
+\section{Teoretyczny opis metody}
+W~realizacji naszego projektu, w~celu obliczenia przybliżonej wartości pierwiastka zastosujemy wielomian interpolacyjny Lagrange'a. Wielomian ten będzie konstruowany na podstawie wybranego podzbioru danych z~tabeli, które zostaną wybrane w~sposób optymalny, tak aby przybliżenie było jak najbardziej dokładne.
+
+\subsection{Teoretyczny opis wielomianu interpolacyjnego w postaci Lagrange'a}
+
+\begin{example}
+
+Przyjmijmy, że wybieramy podzbiór danych $${(1,1), (4,2), (9,3), (16,4)}$$ czyli $x_0=1, x_1=4, x_2=9$ i $x_3=16$, oraz odpowiadające im wartości funkcji $f(x)$. W~celu skonstruowania wielomianu interpolacyjnego Lagrange'a dla tego podzbioru danych, należy obliczyć:
+
+\begin{align*}
+L_0(x) &= \frac{(x-4)(x-9)(x-16)}{(1-4)(1-9)(1-16)} = -\frac{1}{360}(x^3 - 29x^2 + 244x - 576), \\
+L_1(x) &= \frac{(x-1)(x-9)(x-16)}{(4-1)(4-9)(4-16)} = \frac{1}{180}(x^3 - 26x^2 + 169x - 144), \\
+L_2(x) &= \frac{(x-1)(x-4)(x-16)}{(9-1)(9-4)(9-16)} = -\frac{1}{280}(x^3 - 21x^2 + 84x - 64), \\
+L_3(x) &= \frac{(x-1)(x-4)(x-9)}{(16-1)(16-4)(16-9)} = \frac{1}{1260}(x^3 - 14x^2 + 49x - 36).
+\end{align*}
+
+Wielomian interpolacyjny dla wybranego podzbioru danych z~tabeli to \\ $P(x) = f(x_0)L_0(x) + f(x_1)L_1(x) + f(x_2)L_2(x) + f(x_3)L_3(x)$, czyli:
+
+\begin{align*}
+P(x) &= 1\cdot\left(-\frac{1}{360}(x^3 - 29x^2 + 244x - 576)\right) \\
+&\quad + 2\cdot\frac{1}{180}(x^3 - 26x^2 + 169x - 144) \\
+&\quad + 3\cdot\left(-\frac{1}{280}(x^3 - 21x^2 + 84x - 64)\right) \\
+&\quad + 4\cdot\frac{1}{1260}(x^3 - 14x^2 + 49x - 36) \\
+&= \frac{1}{1260}x^3 - \frac{1}{36}x^2 + \frac{41}{90}x + \frac{4}{7}.
+\end{align*}
+
+Aby sprawdzić, jak dobrze wybrany podzbiór danych z~tabeli przybliża dokładną wartość pierwiastka $\sqrt{23}$, możemy porównać wartość wielomianu $P(x)$ dla $x=23$ z~wartością $\sqrt{23}$:
+
+\begin{align*}
+P(23) &= \frac{1}{1260}(23)^3 - \frac{1}{36}(23)^2 + \frac{41}{90}(23) + \frac{4}{7} \approx 6,0111111s,
+\end{align*}
+
+co jest dość odległym przybliżeniem wartości $\sqrt{23}$.
+
+\end{example}
+
+\section{Opis implementacji}
+\section{Instrukcja obsługi programu}
+\section{Raport z~demonstracji}
+\section{Wnioski i~interpretacja wyników}
+\section*{Bibliografia}
+
+\end{document}
