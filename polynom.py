@@ -1,30 +1,56 @@
-from data import Pair, Data
+from data import Data, DataSets
+from math import sqrt
 
 def main():
-    x = [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-    y = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
+    data_raw = [
+            [0, 0],
+            [1, 1],
+            [4, 2],
+            [9, 3],
+            [16, 4],
+            [25, 5],
+            [36, 6],
+            [49, 7],
+            [64, 8],
+            [81, 9]
+        ]
 #    x = [-1, 0, 1, 2]
 #    y = [0, 1, 2, 9]
-    d = Data(x, y)
-    p = Polynomial(data=d)
-    p.calc()
+    d = DataSets(data_raw)
+    p = Polinomials(d)
+    print(p.find_best())
 
 
-class Polynomial:
+class Polinomials:
+    def __init__(self, datasets: DataSets):
+        self.datasets = datasets
+
+    def find_best(self):
+        polinomials = []
+        for data in self.datasets:
+            p = Polynome(data)
+            polinomials.append(p)
+            p.calc()
+        best = min(polinomials, key=lambda p: abs(p.value - sqrt(23)))
+        return best
+
+class Polynome:
     def __init__(self, data: Data):
         self.data = data
         self.report = Report(data)
         self.__multipliers = LagrangeMultipliers(data)
         self.report.add_multipliers(self.__multipliers)
+        self.value = 0
 
     def calc(self):
         res = 0
         for multiplier, data_ in zip(self.__multipliers.multipliers, self.data.data):
-            res = multiplier.calc(23) + data_.y
-        print(res)
+            self.value = self.value + multiplier.calc(23) * data_.y
         self.report.generate()
 
+
+    def __str__(self):
+        return f"{self.data} -> {self.value}"
 
 class LagrangeMultiplier:
     def __init__(self, i: int, data: Data):
@@ -82,8 +108,6 @@ class Report:
         self.data = data
 
     def add_multipliers(self, multipliers: LagrangeMultipliers):
-        pass
-
         self.multipliers = multipliers
         self.__multipliers_view = []
 
@@ -106,7 +130,6 @@ class Report:
         {self.__multipliers_view}
         {self.__generate_p()}
         \end{{document}}"""
-        print(content)
         return content
 
 

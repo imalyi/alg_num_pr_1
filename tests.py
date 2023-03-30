@@ -1,17 +1,21 @@
 import unittest
 from polynom import LagrangeMultiplier, Multilplier
-from data import Data
+from data import Data, DataSets
 
 
 class TestMultipliers(unittest.TestCase):
     def setUp(self):
-        x = [-1, 0, 1, 2]
-        y = [-1, 0, 1, 2]
+        data_raw = [
+            [-1, -1],
+            [0, 0],
+            [1, 1],
+            [2, 2]
+        ]
 
-        self.data = Data(x, y)
+        self.data = Data(data_raw)
         self.multipliers = []
 
-        for i in range(len(x) - 1):
+        for i in range(len(data_raw) - 1):
             self.multipliers.append(LagrangeMultiplier(i, self.data))
 
         self.x = 10
@@ -23,6 +27,7 @@ class TestMultipliers(unittest.TestCase):
             self.assertEqual(self.true_answ[i], m.calc(self.x))
             i += 1
 
+
 class TestMultiplier(unittest.TestCase):
     def setUp(self) -> None:
         pass
@@ -32,6 +37,20 @@ class TestMultiplier(unittest.TestCase):
         self.x = 10
         self.true_answ = -10
         self.assertEqual(self.multiplier.calc(self.x), self.true_answ)
+
+
+class TestDataSets(unittest.TestCase):
+    def setUp(self) -> None:
+        self.data_raw = [
+            [-1, -1],
+            [0, 0],
+            [1, 1],
+            [2, 2]
+        ]
+        self.data_sets = DataSets(self.data_raw)
+
+    def test_subsets(self):
+        self.assertEqual(len(self.data_sets), 10)
 
 
 if __name__ == '__main__':
