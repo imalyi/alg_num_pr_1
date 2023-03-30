@@ -1,6 +1,6 @@
 import unittest
-from code.polynom import LagrangeMultiplier, Multilplier
-from code.data import Data, DataSets
+from polynom import LagrangeMultiplier, Multilplier
+from data import Data, DataSets
 
 
 class TestMultipliers(unittest.TestCase):
