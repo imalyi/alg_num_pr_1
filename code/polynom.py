@@ -16,20 +16,39 @@ def main():
             [81, 9]
         ]
     d = DataSets(data_raw)
-    p = Polinomials(d)
-    print(p.find_best())
+    p = Polynomials(d)
+    best = p.find_best()
+    print(best)
+    best.report.save()
 
 
-class Polinomials:
+
+class Polynomials:
+    """
+    A class that represents a collection of polynomial objects that can be used to find the best polynomial
+    approximation for a given set of data.
+    """
+
     def __init__(self, datasets: DataSets):
+        """
+        Initializes an object of the Polynomials class with a single parameter - datasets.
+
+        :param datasets: A DataSets object containing a list of data points.
+        """
         self.datasets = datasets
 
     def find_best(self):
-        polinomials = []
+        """
+        Computes a set of polynomial objects for each dataset in the Polynomials object and returns the best
+        polynomial approximation for the dataset.
+
+        :return: A polynomial object that best approximates the dataset.
+        """
+        polynomials = []
         for data in self.datasets:
             p = Polynome(data)
-            polinomials.append(p)
-        best = min(polinomials, key=lambda p: abs(p.value - sqrt(23)))
+            polynomials.append(p)
+        best = min(polynomials, key=lambda p: abs(p.value - sqrt(23)))
         return best
 
 
@@ -106,6 +125,10 @@ class Report:
     def __init__(self, data: Data):
         self.data = data
 
+    def save(self):
+        with open('../reports/best.tex', 'w') as f:
+            f.write(self.generate())
+
     def add_multipliers(self, multipliers: LagrangeMultipliers):
         self.multipliers = multipliers
         self.__multipliers_view = []
@@ -130,6 +153,9 @@ class Report:
         {self.__generate_p()}
         \end{{document}}"""
         return content
+
+    def __str__(self):
+        return self.generate()
 
 
 if __name__ == "__main__":
