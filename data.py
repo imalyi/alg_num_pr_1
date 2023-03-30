@@ -17,3 +17,5 @@ class Data:
         for x, y in zip(x_set, y_set):
             self.data.append(Pair(x, y))
 
+    def get_data(self, i):
+        return self.data[:i] + self.data[i+1:]
