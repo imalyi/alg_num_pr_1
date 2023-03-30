@@ -1,6 +1,0 @@
-from polynom import LagrangeMultipliers
-
-
-
-
-

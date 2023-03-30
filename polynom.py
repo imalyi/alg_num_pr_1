@@ -1,6 +1,7 @@
 from data import Data, DataSets
 from math import sqrt
 
+
 def main():
     data_raw = [
             [0, 0],
@@ -14,8 +15,6 @@ def main():
             [64, 8],
             [81, 9]
         ]
-#    x = [-1, 0, 1, 2]
-#    y = [0, 1, 2, 9]
     d = DataSets(data_raw)
     p = Polinomials(d)
     print(p.find_best())
@@ -30,9 +29,9 @@ class Polinomials:
         for data in self.datasets:
             p = Polynome(data)
             polinomials.append(p)
-            p.calc()
         best = min(polinomials, key=lambda p: abs(p.value - sqrt(23)))
         return best
+
 
 class Polynome:
     def __init__(self, data: Data):
@@ -41,16 +40,16 @@ class Polynome:
         self.__multipliers = LagrangeMultipliers(data)
         self.report.add_multipliers(self.__multipliers)
         self.value = 0
+        self.__calc()
 
-    def calc(self):
-        res = 0
+    def __calc(self):
         for multiplier, data_ in zip(self.__multipliers.multipliers, self.data.data):
             self.value = self.value + multiplier.calc(23) * data_.y
         self.report.generate()
 
-
     def __str__(self):
         return f"{self.data} -> {self.value}"
+
 
 class LagrangeMultiplier:
     def __init__(self, i: int, data: Data):
