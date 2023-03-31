@@ -1,0 +1,12 @@
+Zawartość dokumentacji:
+1. Treść zadania
+2. Teoretyczny opis metody
+	Teoria ogólna
+	Zastosowanie do zadania
+	Realizacja na przykładzie liczonym ręcznie
+3. Algorytm
+	Opis dokumentacji (W jakim języku napisany, schematy blokowe?, pseudokod (lib-algorithm)?)
+	Instrukcje użytkownika
+	Raport z demonstracji
+4. Wnioski i interpretacja wyników
+5. Kod programu
