@@ -14,7 +14,7 @@
 
 ## Kod:
 - [ ] 1. Drukowac wartosc math.sqrt(23) w odpowiedzi
-- [ ] 2. Uzytkownik ma mozliwosc zmieniac dane
+- [x] 2. Uzytkownik ma mozliwosc zmieniac dane
 - [ ] 3. Dodac wykres do latex report
 - [ ] 4. Naprawic wyglad latex report
 - [ ] 5. Dodac ogolny wzor
