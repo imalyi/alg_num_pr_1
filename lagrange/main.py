@@ -1,8 +1,3 @@
-# TODO: print sqrt
-# TODO: add data input
-# TODO: plot graphs
-# TODO: fix latex report
-# TODO: add common formula
 
 from polynomials import Polynomials
 from getData import GetData

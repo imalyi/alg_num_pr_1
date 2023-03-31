@@ -1,12 +1,20 @@
-## Zawartość dokumentacji:
-- [ ] 1. Treść zadania
+## Dokumentacjas:
+- [x] 1. Treść zadania
 - [ ] 2. Teoretyczny opis metody
-    - [ ] Teoria ogólna
+    - [x] Teoria ogólna
     - [ ] Zastosowanie do zadania
-    - [ ] Realizacja na przykładzie liczonym ręcznie
+    - [x] Realizacja na przykładzie liczonym ręcznie
 - [ ] 3. Algorytm
     - [ ] Opis dokumentacji (W jakim języku napisany, schematy blokowe?, pseudokod (lib-algorithm)?)
-    - [ ] Instrukcje użytkownika
+    - [x] Instrukcje użytkownika
     - [ ] Raport z demonstracji
 - [ ] 4. Wnioski i interpretacja wyników
 - [ ] 5. Kod programu
+
+
+## Kod:
+- [ ] 1. Drukowac wartosc math.sqrt(23) w odpowiedzi
+- [ ] 2. Uzytkownik ma mozliwosc zmieniac dane
+- [ ] 3. Dodac wykres do latex report
+- [ ] 4. Naprawic wyglad latex report
+- [ ] 5. Dodac ogolny wzor
