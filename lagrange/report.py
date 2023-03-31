@@ -1,4 +1,4 @@
-from .data import Data
+from data import Data
 from lagrange_multipliers import LagrangeMultipliers
 
 class Report:

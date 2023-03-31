@@ -2,6 +2,7 @@ from data import Data
 from report import Report
 from lagrange_multipliers import LagrangeMultipliers
 
+
 class Polynome:
     def __init__(self, data: Data):
         self.data = data

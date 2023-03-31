@@ -1,6 +1,7 @@
-from data import Data, DataSets
-from math import sqrt
+# print sqrt
+# add data input
 
+from polynomials import Polynomials
 
 def main():
     data_raw = [
@@ -15,19 +16,10 @@ def main():
             [64, 8],
             [81, 9]
         ]
-    d = DataSets(data_raw)
-    p = Polynomials(d)
+    p = Polynomials(data_raw)
     best = p.find_best()
     print(best)
     best.report.save()
 
-
-
-
-
-
-
-
 if __name__ == "__main__":
     main()
-
