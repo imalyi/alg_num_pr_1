@@ -1,5 +1,6 @@
 import unittest
-from polynom import LagrangeMultiplier, Multilplier
+from lagrange_multiplier import LagrangeMultiplier
+from multiplier import Multilplier
 from data import Data, DataSets
 
 
