@@ -1,20 +1,27 @@
-Program jest napisany bez uzycia wewnetrzych modulow. Wymaga wersji python 3
-Program oczekuje na dane wejściowe dostarczone w pliku o nazwie "data.txt", znajdującym się w tym samym katalogu co program. Dane powinny być w następującym formacie:
-x y
-x y
-. .
-. .
-. .
-Na przykład:
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{listings}
+\usepackage{textcomp}
+
+\begin{document}
+\lstset{basicstyle=\ttfamily, columns=fullflexible, upquote=true}
+\renewcommand{\lstlistingname}{Listing}
+
+\section{Opis programu}
+
+Program został napisany w języku Python w wersji 3 i nie korzysta z żadnych wewnętrznych modułów, co stanowi jego zaletę. Program może generować raport w formacie LaTeX z obliczonymi wartościami wielomianu Lagrange'a lub zwracać wyniki w postaci tekstu w terminalu. Aby wygenerować raport w formacie LaTeX, należy przekazać parametr \texttt{--latex} przy uruchomieniu programu. W przypadku drukowania wyników w terminalu, nie ma potrzeby przekazywania żadnych parametrów.
+
+Program oczekuje na dane wejściowe dostarczone w pliku \texttt{data.txt}, który powinien znajdować się w tym samym katalogu co program. Dane wejściowe powinny być podane w formacie \texttt{x y}, gdzie \texttt{x} i \texttt{y} to liczby. Przykładowy format danych wejściowych przedstawia się następująco:
+
+\begin{lstlisting}[language=Python]
 1 1
 2 4
 3 9
 4 16
 5 25
+\end{lstlisting}
 
-Celem działania programu jest uzyskanie wyniku, który najlepiej przybliża dane wejściowe do zadanej funkcji. Wynik zostanie zwrócony w następującym formacie:
-(x_{1}, y_{1}), (x_{2}, y_{2}) ... (x_{n}, y_{n}) -> wynik
-Na przykład:
-(9, 3), (16, 4), (25, 5), (36, 6), (49, 7), (64, 8), (81, 9) -> 4.796270197893973, gdzie
-(9, 3), (16, 4), (25, 5), (36, 6), (49, 7), (64, 8), (81, 9) to dane wejściowe, które najlepiej przybliżają funkcję sqrt,
-4.796270197893973 to wynik obliczenia wielomianu Lagrange'a.
+Celem programu jest znalezienie wielomianu Lagrange'a, który najlepiej przybliża dane wejściowe do zadanej funkcji. Wynik zostanie zwrócony w postaci \texttt{(x\_\{1\}, y\_\{1\}), (x\_\{2\}, y\_\{2\}) ... (x\_\{n\}, y\_\{n\}) -> wynik}. Na przykład, \texttt{(9, 3), (16, 4), (25, 5), (36, 6), (49, 7), (64, 8), (81, 9) -> 4.796270197893973}, gdzie \texttt{(9, 3), (16, 4), (25, 5), (36, 6), (49, 7), (64, 8), (81, 9)} to dane wejściowe, które najlepiej przybliżają funkcję \texttt{sqrt}, a \texttt{4.796270197893973} to wynik obliczenia wielomianu Lagrange'a.
+
+\end{document}
