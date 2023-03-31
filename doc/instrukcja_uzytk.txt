@@ -1,0 +1,20 @@
+Program jest napisany bez uzycia wewnetrzych modulow. Wymaga wersji python 3
+Program oczekuje na dane wejściowe dostarczone w pliku o nazwie "data.txt", znajdującym się w tym samym katalogu co program. Dane powinny być w następującym formacie:
+x y
+x y
+. .
+. .
+. .
+Na przykład:
+1 1
+2 4
+3 9
+4 16
+5 25
+
+Celem działania programu jest uzyskanie wyniku, który najlepiej przybliża dane wejściowe do zadanej funkcji. Wynik zostanie zwrócony w następującym formacie:
+(x_{1}, y_{1}), (x_{2}, y_{2}) ... (x_{n}, y_{n}) -> wynik
+Na przykład:
+(9, 3), (16, 4), (25, 5), (36, 6), (49, 7), (64, 8), (81, 9) -> 4.796270197893973, gdzie
+(9, 3), (16, 4), (25, 5), (36, 6), (49, 7), (64, 8), (81, 9) to dane wejściowe, które najlepiej przybliżają funkcję sqrt,
+4.796270197893973 to wynik obliczenia wielomianu Lagrange'a.
