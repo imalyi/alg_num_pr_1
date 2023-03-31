@@ -28,5 +28,5 @@ class Polynomials:
         for data in self.datasets:
             p = Polynome(data)
             polynomials.append(p)
-        best = min(polynomials, key=lambda p: abs(p.value - sqrt(23)))
+        best = sorted(polynomials, key=lambda p: abs(p.value - sqrt(23)))
         return best

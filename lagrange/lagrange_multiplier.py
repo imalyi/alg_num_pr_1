@@ -1,5 +1,7 @@
 from data import Data
 from multiplier import Multilplier
+
+
 class LagrangeMultiplier:
     def __init__(self, i: int, data: Data):
         self.multipliers = []

@@ -1,5 +1,3 @@
-
-
 class Multilplier:
     def __init__(self, x_k, x_i):
         self.x_k = x_k

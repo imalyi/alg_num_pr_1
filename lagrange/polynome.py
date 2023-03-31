@@ -19,3 +19,7 @@ class Polynome:
 
     def __str__(self):
         return f"{self.data} -> {self.value}"
+
+
+    def __repr__(self):
+        return f"{self.data} -> {self.value}"

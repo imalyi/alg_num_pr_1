@@ -1,6 +1,7 @@
 from data import Data
 from lagrange_multipliers import LagrangeMultipliers
 
+
 class Report:
     def __init__(self, data: Data):
         self.data = data
