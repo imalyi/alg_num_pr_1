@@ -116,23 +116,33 @@ def main():
     pary punktów znajdujących się w liście `argumenty`.
     Następnie wyświetla najdokładniejsze przybliżenie oraz węzły, które zostały użyte do jego obliczenia.
     """
-    mindiff = -1
-    bestsubset = []
     subsets = []
     get_all_subsets(argumenty, subsets)
     print(subsets)
+    # for x in subsets:
+    #     wyn = policz(x)
+    #     diff = math.sqrt(23) - wyn
+    #     if mindiff < 0 or abs(diff) < abs(mindiff):
+    #         mindiff = abs(diff)
+    #         bestsubset = x
+    #     # print("Przybliżenie ", x, " wynik = ", policz(x))
+    #     print("Przybliżenie {:<87}wynik = {:<10}".format(str(x), str(policz(x))))
+
+    results = []
     for x in subsets:
         wyn = policz(x)
         diff = math.sqrt(23) - wyn
-        if mindiff < 0 or abs(diff) < abs(mindiff):
-            mindiff = abs(diff)
-            bestsubset = x
-        # print("Przybliżenie ", x, " wynik = ", policz(x))
-        print("Przybliżenie {:<87}wynik = {:<10}".format(str(x), str(policz(x))))
+        results.append((x, wyn, diff))
+
+    results.sort(key=lambda x: -abs(x[2]))
+
+    for x, wyn, diff in results:
+        print("Przybliżenie {:<87}wynik = {:<10}".format(str(x), str(wyn)))
+
     print("\n\n--------")
     print("Najbliżej do pierwiastka z 23 (", math.sqrt(23), ") jest przybliżenie stworzone z węzłów:")
-    print(bestsubset)
-    print("\nDające wartość ", policz(bestsubset))
+    print(results[-1][0])
+    print("\nDające wartość ", results[-1][1])
 
 
 if __name__ == '__main__':
