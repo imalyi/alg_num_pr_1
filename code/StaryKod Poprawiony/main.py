@@ -1,10 +1,11 @@
 import math
 
-argumenty = [[0,0],[1,1],[4,2],[9,3],[16,4],[25,5],[36,6],[49,7],[64,8],[81,9]]
+argumenty = [[0, 0], [1, 1], [4, 2], [9, 3], [16, 4], [25, 5], [36, 6], [49, 7], [64, 8], [81, 9]]
 
 współczynniki = [[0 for x in range(10)] for y in range(10)]
 
-def pomnóż(arr1,arr2):
+
+def pomnóż(arr1, arr2):
     """
     Funkcja oblicza iloczyn dwóch wektorów reprezentowanych jako listy arr1 i arr2.
     Argumenty:
@@ -13,13 +14,14 @@ def pomnóż(arr1,arr2):
     Zwraca:
     Wynikowy wektor będący iloczynem wektorów arr1 i arr2.
     """
-    wynik = [0 for x in range(25)]
+    wynik = [0 for _ in range(25)]
     for x in range(len(arr1)):
         for y in range(len(arr2)):
-            wynik[x+y]+=arr1[x]*arr2[y]
+            wynik[x + y] += arr1[x] * arr2[y]
     return wynik
 
-def dodaj(arr1,arr2):
+
+def dodaj(arr1, arr2):
     """
     Funkcja oblicza sumę dwóch wektorów reprezentowanych jako listy arr1 i arr2.
     Argumenty:
@@ -29,10 +31,11 @@ def dodaj(arr1,arr2):
     Wynikowy wektor będący sumą wektorów arr1 i arr2.
     """
     for x in range(len(arr1)):
-        arr1[x]+=arr2[x]
+        arr1[x] += arr2[x]
     return arr1
 
-def wielomian(wiel,n):
+
+def wielomian(wiel, n):
     """
     Funkcja oblicza wartość wielomianu o współczynnikach reprezentowanych przez listę wiel w punkcie n.
     Argumenty:
@@ -43,7 +46,7 @@ def wielomian(wiel,n):
     """
     suma = 0
     for x in range(len(współczynniki)):
-        suma+=wiel[x]*math.pow(n,x)
+        suma += wiel[x] * math.pow(n, x)
     return suma
 
 
@@ -57,7 +60,7 @@ def get_bit(num, bit):
 
 def get_all_subsets(v, sets):
     """
-    Funkcja wraca wszystkie podciągi listy
+    Funkcja zwraca wszystkie podciągi listy
     """
     subsets_count = 2 ** len(v)
     for i in range(0, subsets_count):
@@ -67,6 +70,7 @@ def get_all_subsets(v, sets):
                 tupler = tuple(v[j])
                 st.add(tupler)
         sets.append(st)
+
 
 def policz(subset):
     """
@@ -78,34 +82,33 @@ def policz(subset):
     Wynikowy wielomian interpolacyjny dla punktów od indeksu od do indeksu do.
     """
     subset = list(subset)
-    współczynniki = [[0 for x in range(10)] for y in range(10)]
+    współczynniki = [[0 for _ in range(10)] for _ in range(10)]
     for x in range(len(subset)):
         pierwszy = True
         for y in range(len(subset)):
-            if x==y:
+            if x == y:
                 continue
-            iloczyn = []
-            iloczyn.append(-subset[y][0])
-            iloczyn.append(1)
-            iloraz = subset[x][0]-subset[y][0]
+            iloczyn = [-subset[y][0], 1]
+            iloraz = subset[x][0] - subset[y][0]
             if pierwszy:
-                współczynniki[x][0]=iloczyn[0]
+                współczynniki[x][0] = iloczyn[0]
                 współczynniki[x][1] = iloczyn[1]
                 for z in range(len(współczynniki[x])):
-                    współczynniki[x][z]/=iloraz
+                    współczynniki[x][z] /= iloraz
                 pierwszy = False
             else:
-                wynik = pomnóż(współczynniki[x],iloczyn)
+                wynik = pomnóż(współczynniki[x], iloczyn)
                 for z in range(len(współczynniki[x])):
                     współczynniki[x][z] = wynik[z]
                 for z in range(len(współczynniki[x])):
-                    współczynniki[x][z]/=iloraz
+                    współczynniki[x][z] /= iloraz
 
-    wynik = [0 for x in range(15)]
+    wynik = [0 for _ in range(15)]
     for x in range(len(subset)):
         d = subset[x][1]
-        wynik=dodaj(wynik,pomnóż(współczynniki[x],[d]))
-    return(wielomian(wynik,23))
+        wynik = dodaj(wynik, pomnóż(współczynniki[x], [d]))
+    return wielomian(wynik, 23)
+
 
 def main():
     """
@@ -116,18 +119,21 @@ def main():
     mindiff = -1
     bestsubset = []
     subsets = []
-    get_all_subsets(argumenty, subsets);
+    get_all_subsets(argumenty, subsets)
     print(subsets)
     for x in subsets:
         wyn = policz(x)
-        diff = math.sqrt(23)-wyn
-        if mindiff<0 or abs(diff)<abs(mindiff):
-            mindiff=abs(diff)
+        diff = math.sqrt(23) - wyn
+        if mindiff < 0 or abs(diff) < abs(mindiff):
+            mindiff = abs(diff)
             bestsubset = x
-        print("Przybliżenie ",x," wynik = ",policz(x))
+        # print("Przybliżenie ", x, " wynik = ", policz(x))
+        print("Przybliżenie {:<87}wynik = {:<10}".format(str(x), str(policz(x))))
     print("\n\n--------")
-    print("Najbliżej do pierwiastka z 23 (",math.sqrt(23),") jest przybliżenie stworzone z węzłów:")
+    print("Najbliżej do pierwiastka z 23 (", math.sqrt(23), ") jest przybliżenie stworzone z węzłów:")
     print(bestsubset)
-    print("\nDające wartość ",policz(bestsubset))
+    print("\nDające wartość ", policz(bestsubset))
 
-main()
+
+if __name__ == '__main__':
+    main()
