@@ -20,19 +20,24 @@ class Report:
 
     def __generate_p(self):
         res = "$P(x)="
+        terms = []
         i = 0
         for x_y in self.data.data:
-            res = res + f"{x_y.y}*l_{i}+"
+            terms.append(f"{x_y.y}*l_{i}")
             i += 1
-        res = res + '$'
+        res += "+".join(terms)
+        res += "$"
         return res
 
     def generate(self):
-        content = f""""\documentclass{{article}}
+        content = f"""\documentclass{{article}}
         \\begin{{document}}
+        Obliczenie najlepszego przybliżenia \sqrt(23):\\newline\\newline
+        \\begin{{align*}}
         {self.__multipliers_view}
+        \\end{{align*}}\\newline
         {self.__generate_p()}
-        \end{{document}}"""
+        \\end{{document}}"""
         return content
 
     def __str__(self):
