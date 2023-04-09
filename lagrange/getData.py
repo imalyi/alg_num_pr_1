@@ -1,14 +1,22 @@
-class GetData():
-	def getData(self):
-		data = []
-		try:
-			f = open("./data.txt")
-		except FileNotFoundError:
-			print("PLik nie istnieje!")
-			exit()
-		lines = f.readlines()
-		for x in range(len(lines)):
-			arg = lines[x].split()
-			data.append([int(arg[0]),int(arg[1])])
-		return data
-
+def import_data():
+    data = []
+    try:
+        with open("./data.txt") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                values = line.split()
+                if len(values) != 2:
+                    print("Błąd: wiersz nie zawiera dwóch liczb oddzielonych spacją!")
+                    exit()
+                try:
+                    x, y = int(values[0]), int(values[1])
+                except ValueError:
+                    print("Błąd: nie można przekonwertować wartości na liczby całkowite!")
+                    exit()
+                data.append([x, y])
+    except FileNotFoundError:
+        print("Błąd: plik nie istnieje!")
+        exit()
+    return data
