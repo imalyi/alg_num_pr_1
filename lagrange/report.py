@@ -1,12 +1,10 @@
 import os
 from datetime import datetime
-from data import Data
-from lagrange_multipliers import LagrangeMultipliers
 
 
 class Report:
-    def __init__(self, data: Data):
-        self.data = data
+    def __init__(self, polynome):
+        self.polynome = polynome
 
     def save(self):
         now = datetime.now()
@@ -16,33 +14,36 @@ class Report:
         with open(file_path, 'w') as f:
             f.write(self.generate())
 
-    def add_multipliers(self, multipliers: LagrangeMultipliers):
-        self.multipliers = multipliers
-        self.__multipliers_view = []
+    def __generate_multipliers(self):
+        multipliers_view = []
 
-        for multiplier in self.multipliers.multipliers:
-            self.__multipliers_view.append(f"${multiplier}$")
-        self.__multipliers_view = ' \\\ '.join(self.__multipliers_view)
+        for multiplier in self.polynome.multipliers.multipliers:
+            multipliers_view.append(f"${multiplier}$")
+        multipliers_view = ' \\\ '.join(multipliers_view)
+        return multipliers_view
 
     def __generate_p(self):
         res = "$P(x)="
         terms = []
         i = 0
-        for x_y in self.data.data:
-            terms.append(f"{x_y.y}*l_{i}")
+        for x_y in self.polynome.data.data:
+            terms.append(f"{x_y.y}\cdot l_{i}")
             i += 1
         res += "+".join(terms)
         res += "$"
         return res
 
     def generate(self):
+        self.__generate_multipliers()
         content = f"""\documentclass{{article}}
         \\begin{{document}}
         Obliczenie najlepszego przybliżenia \sqrt(23):\\\\[0.25cm]
         \\begin{{align*}}
-        {self.__multipliers_view}
+        {self.__generate_multipliers()} \\\\
+               {self.__generate_p()} \\\\
+        {self.polynome.common_formula} \\\\
         \\end{{align*}}\\\\[0.25cm]
-        {self.__generate_p()}
+ 
         \\end{{document}}"""
         return content
 

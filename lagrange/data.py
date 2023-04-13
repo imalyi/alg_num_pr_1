@@ -59,3 +59,9 @@ class Data:
 
     def __repr__(self):
         return '; '.join(list(map(lambda row: str(row), self.data)))
+
+    def to_list(self):
+        tmp = []
+        for pair in self.data:
+            tmp.append((pair.x, pair.y,))
+        return tmp

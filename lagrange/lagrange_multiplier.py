@@ -18,7 +18,8 @@ class LagrangeMultiplier:
 
     def __to_str(self):
         mult = list(map(lambda m: str(m), self.multipliers))
-        res = f"l_{self.i}(x)={'*'.join(mult)}"
+        res = "\cdot".join(mult)
+        res = f"l_{self.i}(x)={res}"
         res = res.replace('--', '+')
         return res
 
