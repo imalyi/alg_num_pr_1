@@ -1,3 +1,5 @@
+import os
+from datetime import datetime
 from data import Data
 from lagrange_multipliers import LagrangeMultipliers
 
@@ -7,7 +9,11 @@ class Report:
         self.data = data
 
     def save(self):
-        with open('../reports/best.tex', 'w') as f:
+        now = datetime.now()
+        current_datetime = now.strftime("%Y%m%d_%H%M%S")
+        filename = f"report_{current_datetime}.tex"
+        file_path = os.path.join('../reports/', filename)
+        with open(file_path, 'w') as f:
             f.write(self.generate())
 
     def add_multipliers(self, multipliers: LagrangeMultipliers):
@@ -32,10 +38,10 @@ class Report:
     def generate(self):
         content = f"""\documentclass{{article}}
         \\begin{{document}}
-        Obliczenie najlepszego przybliżenia \sqrt(23):\\newline\\newline
+        Obliczenie najlepszego przybliżenia \sqrt(23):\\\\[0.25cm]
         \\begin{{align*}}
         {self.__multipliers_view}
-        \\end{{align*}}\\newline
+        \\end{{align*}}\\\\[0.25cm]
         {self.__generate_p()}
         \\end{{document}}"""
         return content
