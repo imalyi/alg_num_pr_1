@@ -5,6 +5,12 @@
 \usepackage{polski}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{dirtree}
+\usepackage{listings}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue}
 \newtheorem{example}{Przykład}
 
 \title{Dokumentacja projektu zespołowego nr 1}
@@ -12,6 +18,8 @@
 \date{Marzec 2023}
 
 \begin{document}
+\lstset{basicstyle=\ttfamily, columns=fullflexible, upquote=true}
+\renewcommand{\lstlistingname}{Listing}
 
 \maketitle
 
@@ -20,11 +28,13 @@ Obliczyć $\sqrt{23}$ za pomocą wielomianów interpolacyjnych dla danych z~tabe
 
 \begin{table}[h]
 \centering
+\hypertarget{tabela}{
 \begin{tabular}{l|llllllllll}
 $x$    & 0 & 1 & 4 & 9 & 16 & 25 & 36 & 49 & 64 & 81 \\ \hline
 $f(x)$ & 0 & 1 & 2 & 3 & 4  & 5  & 6  & 7  & 8  & 9  \\
-\end{tabular}
+\end{tabular}\\[0.25cm]}
 \end{table}
+
 
 Sprawdzić, jaki podzbiór danych z~tabeli daje najlepsze przybliżenie dokładnej wartości pierwiastka (czyli dla jakiego zestawu tych węzłów wielomian Lagrange’a przebiega najbliżej punktu $(23, \sqrt{23})$).
 
@@ -77,10 +87,121 @@ co jest dość odległym przybliżeniem wartości $\sqrt{23}$.
 
 \end{example}
 
-\section{Opis implementacji algorytmu}
-\section{Instrukcja obsługi programu}
+\section{Opis programu}
+Program został napisany w~języku Python w~wersji 3~i~nie korzysta z~żadnych zewnętrznych modułów, co stanowi jego zaletę. Celem programu jest znalezienie wielomianu Lagrange'a, który najlepiej przybliża dane wejściowe dla danego punktu $(23,\sqrt{23})$. Wyniki są porównywane do wartości funkcji \texttt{sqrt(23)} zaimportowanej z biblioteki \texttt{math}.
+
+\subsection{Opis implementacji algorytmu}
+
+\begin{enumerate}
+\item W~funkcji \verb|main()| program rozpoczyna się od wczytania danych z~pliku tekstowego o~nazwie \verb|"data.txt"| za pomocą funkcji \verb|import_data()| i~zapisuje je w~zmiennej \verb|data|.
+\item Następnie tworzony jest obiekt klasy \verb|Polynomials| na podstawie wczytanych danych.
+\item Tworzony jest również obiekt klasy \verb|DataSets| i~przekazywane do niego wczytane dane.
+\item W~klasie \verb|DataSets| generowane są wszystkie możliwe kombinacje podzbiorów danych o~różnych rozmiarach za pomocą funkcji \\\verb|generate_subsets()|.
+\item Dla każdego wygenerowanego podzbioru danych tworzony jest obiekt klasy \verb|Data|, który reprezentuje dany podzbiór. Klasa \verb|Data| przetwarza ten podzbiór na listę obiektów klasy \verb|Pair|.
+\item W~funkcji \verb|main()| wywoływana jest metoda \verb|find_best()| na obiekcie klasy \verb|Polynomials|, która zwraca listę wielomianów posortowaną od najlepszego dopasowania do najgorszego.
+\item Tworzony jest obiekt klasy \verb|Polynome|, który reprezentuje najlepszy wielomian Lagrange'a. Do tego obiektu przekazywane są współczynniki oraz dane wejściowe.
+\begin{enumerate}
+\item Tworzenie obiektu klasy \verb|LagrangeMultipliers|: Program tworzy obiekt klasy \verb|LagrangeMultipliers| za pomocą konstruktora tej klasy, który przyjmuje obiekt klasy \verb|Data| jako argument wejściowy. Wewnątrz konstruktora tworzony jest zestaw wielomianów Lagrange'a za pomocą obiektów klasy \verb|LagrangeMultiplier|, które są przechowywane jako lista w~atrybucie \verb|self.multipliers| w~obiekcie klasy \verb|LagrangeMultipliers|.
+\item Tworzenie obiektów klasy \verb|LagrangeMultiplier|: Dla każdego indeksu \verb|i| w~zakresie od~0~do długości danych wejściowych, program tworzy obiekt klasy \verb|LagrangeMultiplier| za pomocą konstruktora tej klasy, który przyjmuje indeks \verb|i| oraz obiekt klasy \verb|Data| jako dane wejściowe. Wewnątrz konstruktora \verb|LagrangeMultiplier| tworzony jest pojedynczy wielomian Lagrange'a za pomocą obiektów klasy \verb|Multiplier|, które są przechowywane jako lista w atrybucie \verb|self.multipliers| w obiekcie klasy \verb|LagrangeMultiplier|.
+\item Tworzenie obiektów klasy \verb|Multiplier|: Dla każdej pary danych (\verb|x, y|) w~danych wejściowych dla danego indeksu \verb|i|, program tworzy obiekt klasy \verb|Multiplier| za pomocą konstruktora tej klasy, który przyjmuje wartości \verb|x_k| i~\verb|x_i| jako argumenty wejściowe, gdzie \verb|x_k| jest wartością \verb|x| dla danej pary, a~\verb|x_i| jest wartością \verb|x| dla indeksu, dla którego tworzony jest wielomian Lagrange'a.
+\item Obliczanie wartości interpolowanego wielomianu Lagrange'a: Po utworzeniu obiektów klasy \verb|LagrangeMultiplier|, program wywołuje w~klasie \verb|Polynome| metodę \verb|calc(x)| na każdym z~obiektów klasy \verb|Multiplier|, przekazując jej wartość 23, dla której ma zostać obliczona wartość interpolowanego wielomianu Lagrange'a.
+\end{enumerate}
+\item Na koniec program wypisuje na ekranie najlepszy wielomian Lagrange'a wraz z~jego współczynnikami, na podstawie obiektu klasy \verb|Polynomial| oraz generuje raport w~pliku \verb|best.tex|.
+\item Program kończy swoje działanie.
+\end{enumerate}
+
+\section{Instrukcja użytkowania}
+Do prawidłowego działania programu wymagany jest zainstalowany interpreter języka Python~3. Należy również upewnić się, że struktura plików programu jest kompletna, a~w~szczegółności, że plik z danymi wejściowymi (opisany szczegółowo poniżej) znajduje się we właściwym miejscu.\\
+
+Aby uruchomić program, należy:
+\begin{enumerate}
+    \item Otworzyć terminal lub wiersz polecenia na swoim komputerze.
+    \item Przejść do katalogu, w którym znajduje się plik \texttt{main.py}.
+    \item (Opcjonalnie) Zmienić dane wejściowe w pliku \texttt{data.txt}
+    \item Uruchomić program komputerowy za pomocą: \texttt{python main.py} (lub \texttt{py main.py})
+\end{enumerate}
+Jeśli wszystko się powiodło, program wczyta dane z pliku i wykona się. W terminalu powinny wyświetlić się dane wyjściowe (opisane poniżej). W folderze \texttt{reports} powstanie nowy plik w formacie \texttt{.tex}, którego tytuł będzie połączeniem słowa \texttt{report} oraz daty i godziny wykonania programu.
+\subsection{Dane wejściowe}
+Program oczekuje na dane wejściowe dostarczone w~pliku \texttt{data.txt}, który powinien znajdować się w~tym samym katalogu co program. Domyślnie w~pliku znajdują się pełne dane z~\hyperlink{tabela}{tabeli} z~punktu 1. Poprzez modyfikację pliku \texttt{dane.txt} użytkownik może zmieniać zakres istniejących danych wejściowych oraz dodawać nowe. 
+
+Dane wejściowe powinny być podane w~formacie \texttt{x y}, gdzie~\texttt{x} i~\texttt{y} są odpowiednio współrzędnymi $(x,y)$ danego węzła i~są oddzielone spacją. Przykładowy format danych wejściowych przedstawia się następująco: 
+\begin{lstlisting}[language = Python]
+                                1 1
+                                4 2
+                                9 3
+                                16 4
+                                25 5
+\end{lstlisting}
+\subsection{Walidacja danych wejściowych}
+Za proces importu danych do programu oraz ich walidację odpowiada funkcja \texttt{import\_data} zlokalizowana w~pliku \texttt{getData.py}.
+
+Funkcja sprawdza każdą linijkę, czy zawiera dwie liczby całkowite oddzielone spacją, a~następnie dodaje te liczby do listy \texttt{data}. 
+
+Jeśli program napotka pustą linijkę, lub spacji w linijce jest więcej niż jedna, nie wpływa to na działanie programu. 
+
+Jeśli plik nie istnieje lub linijka nie zawiera dwóch liczb, funkcja wypisuje odpowiedni komunikat o~błędzie i~program kończy działanie. 
+
+W~przypadku niepowodzenia konwersji wartości na liczby całkowite, również wypisuje komunikat o~błędzie i~kończy działanie.
+
+Gdy wszystko się powiedzie, funkcja na końcu zwraca listę z~danymi.
+
+\subsection{Dane wyjściowe}
+Program generuje raport w~formacie \texttt{.tex} z~obliczonymi wartościami najlepiej dopasowanego wielomianu. Zwraca również wyniki w~postaci tekstu w~terminalu – zestawu danych w kolejności od najlepszego do najgorszego dopasowania.
+
+Wynik w~terminalu zostanie zwrócony w~postaci: $$(x_1, y_1), (x_2, y_2)\ldots (x_n, y_n) \rightarrow wynik$$
+
+Na przykład:\\[0.15cm]
+\texttt{(1, 1), (4, 2), (64, 8) -> 6.785185185185185}\\
+
+gdzie:\\[0.15cm]\texttt{(1, 1), (4, 2), (64, 8)} to dane wejściowe, które najlepiej przybliżają funkcję \texttt{sqrt},\\[0.15cm]\texttt{6.785185185185185} to wynik obliczenia wielomianu Lagrange'a.
+
+\subsection{Przykładowe wyniki programu}
+
+\section{Struktura plików}
+\dirtree{%
+    .1 program.
+    .2 lagrange.
+    .3 data.py.
+    .3 data.txt.
+    .3 getData.py.
+    .3 lagrange\_multiplier.py.
+    .3 lagrange\_multipliers.py.
+    .3 main.py.
+    .3 multiplier.py.
+    .3 polynome.py.
+    .3 polynomials.py.
+    .3 report.py.
+    .3 tests.py.
+    .2 reports.
+    .3 \ldots.
+}
+\subsection{Opis struktury plików}
+\begin{itemize}
+    \item Folder \verb|program| – folder nadrzędny, zawiera wszystkie pliki programu
+    \begin{itemize}
+        \item Folder \verb|lagrange| – zawiera pliki odpowiadające za funkcjonowanie programu
+        \begin{itemize}
+            \item Plik \verb|data.py| zawiera definicje klas \verb|Pair|, \verb|DataSets| i \verb|Data|.
+            \item \verb|data.txt| to plik tekstowy służący do przechowywania danych wejściowych programu. Ten plik należy zmodyfikować, chcąc użyć innych danych niż domyślne.
+            \item Plik \verb|getData.py| zawiera funkcję importującą dane z pliku oraz sprawdzającą ich poprawność.
+            \item Plik \verb|lagrange_multiplier.py| zawiera klasę reprezentującą wielomian Lagrange'a dla jednego punktu danych. Oblicza wartość wielomianu Lagrange'a dla danego $x$.
+            \item Plik \verb|lagrange_multipliers.py| zawiera klasę reprezentującą wielomiany Lagrange'a dla całego zbioru danych
+            \item Plik \verb|main.py| zawiera główną funkcję programu.
+            \item Plik \verb|multiplier.py| zawiera klasę, która reprezentuje obiekt do obliczania wartości na podstawie podanego wzoru matematycznego.
+            \item Plik \verb|polynome.py| zawiera klasę \verb|Polynome|, która reprezentuje wielomian interpolacyjny Lagrange'a dla danego zbioru danych.
+            \item Plik \verb|polynomials.py| zawiera klasę reprezentującą zbiór wielomianów interpolacyjnych Lagrange'a dla różnych zbiorów danych.
+            \item Plik \verb|report.py| odpowiada za generowanie raportów dla najlepszych dopasowań wielomianów.
+            \item Plik \verb|tests.py| zawiera kod do testowania funkcji w innych modułach
+        \end{itemize}
+        \item Folder \verb|reports| – zawiera raporty w~formacie .tex wygenerowane przez kolejne uruchomienia programu.
+    \end{itemize}
+\end{itemize}
+
 \section{Raport z~demonstracji}
+
 \section{Wnioski i~interpretacja wyników}
+
 \section*{Bibliografia}
+Danuta Jaruszewska-Walczak - wykład Algorytmy numeryczne
 
 \end{document}
