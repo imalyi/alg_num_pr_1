@@ -13,6 +13,51 @@
     linkcolor=blue}
 \newtheorem{example}{Przykład}
 
+\usepackage{graphicx}
+\graphicspath{ {./} }
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\graphicspath{ {./} }
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{commentsColor}{rgb}{0.497495, 0.497587, 0.497464}
+\definecolor{keywordsColor}{rgb}{0.000000, 0.000000, 0.635294}
+\definecolor{stringColor}{rgb}{0.558215, 0.000000, 0.135316}
+\definecolor{backcolor}{rgb}{0.95,0.95,0.92}
+\lstset{ %
+  backgroundcolor=\color{backcolor},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{commentsColor}\textit,    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=tb,	                   	   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{keywordsColor}\bfseries,       % keyword style
+  language=Python,                 % the language of the code (can be overrided per snippet)
+  otherkeywords={*,...},           % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{commentsColor}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{stringColor}, % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname,                  % show the filename of files included with \lstinputlisting; also try caption instead of title
+  columns=fixed                    % Using fixed column width (for e.g. nice alignment)
+}
+
+
 \title{Dokumentacja projektu zespołowego nr 1}
 \author{Anna Ćwiklińska, Krystian Gronkowski, Ihor Malyi}
 \date{Marzec 2023}
@@ -200,6 +245,318 @@ gdzie:\\[0.15cm]\texttt{(1, 1), (4, 2), (64, 8)} to dane wejściowe, które najl
 \section{Raport z~demonstracji}
 
 \section{Wnioski i~interpretacja wyników}
+
+\section{Kod programu}
+Main.py
+\begin{lstlisting}[frame=single]
+import math
+
+from polynomials import Polynomials
+from getData import import_data
+from math import sqrt
+from plot import Plot
+
+
+def main():
+    p = Polynomials(import_data())
+    best = p.find_best()
+    print(f"sqrt(23) = {math.sqrt(23)}")
+    for b in best:
+        print(b)
+    best[-1].report.generate()
+    best[-1].report.save()
+
+
+if __name__ == "__main__":
+    main()
+
+\end{lstlisting}
+
+getData.py
+\begin{lstlisting}[frame=single]
+def import_data():
+    data = []
+    try:
+        with open("./data.txt") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                values = line.split()
+                if len(values) != 2:
+                    print("Błąd: wiersz nie zawiera dwóch liczb oddzielonych spacją!")
+                    exit()
+                try:
+                    x, y = int(values[0]), int(values[1])
+                except ValueError:
+                    print("Błąd: nie można przekonwertować wartości na liczby całkowite!")
+                    exit()
+                data.append([x, y])
+    except FileNotFoundError:
+        print("Błąd: plik nie istnieje!")
+        exit()
+    return data
+\end{lstlisting}
+
+Lagrangemultiplier.py
+\begin{lstlisting}[frame=single]
+from data import Data
+from multiplier import Multilplier
+
+
+class LagrangeMultiplier:
+    def __init__(self, i: int, data: Data):
+        self.multipliers = []
+        self.i = i
+        for pair in data.get_data(i):
+            x_i = data.data[i].x
+            self.multipliers.append(Multilplier(pair.x, x_i))
+
+    def calc(self, x: int):
+        res = 1
+        for multiplier in self.multipliers:
+            res = res * multiplier.calc(x)
+        return res
+
+    def __to_str(self):
+        mult = list(map(lambda m: str(m), self.multipliers))
+        res = "\cdot".join(mult)
+        res = f"l_{self.i}(x)={res}"
+        res = res.replace('--', '+')
+        return res
+
+    def __str__(self):
+        return self.__to_str()
+
+    def __repr__(self):
+        return self.__to_str()
+\end{lstlisting}
+
+Lagrangemultipliers.py
+\begin{lstlisting}[frame=single]
+from data import Data
+from data import Data
+from lagrange_multiplier import LagrangeMultiplier
+
+
+class LagrangeMultipliers:
+    def __init__(self, data: Data):
+        self.multipliers = []
+        for i in range(len(data.data)):
+            self.multipliers.append(LagrangeMultiplier(i, data))
+\end{lstlisting}
+
+Multiplier.py
+\begin{lstlisting}[frame=single]
+class Multilplier:
+    def __init__(self, x_k, x_i):
+        self.x_k = x_k
+        self.x_i = x_i
+        self.value = None
+
+    def calc(self, x):
+        self.value = (x - self.x_k) / (self.x_i - self.x_k)
+        return self.value
+
+    def __str__(self):
+        return f"\\frac{{x-{self.x_k}}}{{ {self.x_i}-{self.x_k}}}"
+
+    def __repr__(self):
+        return f"\\frac{{x-{self.x_k}}}{{ {self.x_i}-{self.x_k}}}"
+\end{lstlisting}
+
+Polynomials.py
+\begin{lstlisting}[frame=single]
+from polynome import Polynome
+from math import sqrt
+from data import DataSets
+
+
+class Polynomials:
+    """
+    A class that represents a collection of polynomial objects that can be used to find the best polynomial
+    approximation for a given set of data.
+    """
+
+    def __init__(self, datasets: list):
+        """
+        Initializes an object of the Polynomials class with a single parameter - datasets.
+        :param datasets: A DataSets object containing a list of data points.
+        """
+        self.datasets = DataSets(datasets)
+
+    def find_best(self):
+        """
+        Computes a set of polynomial objects for each dataset in the Polynomials object and returns the best
+        polynomial approximation for the dataset.
+        :return: A polynomial object that best approximates the dataset.
+        """
+        polynomials = []
+        for data in self.datasets:
+            p = Polynome(data)
+            polynomials.append(p)
+        best = sorted(polynomials, key=lambda p: abs(p.value - sqrt(23)))
+        return best
+
+\end{lstlisting}
+Polynome.py
+\begin{lstlisting}[frame=single]
+from data import Data
+from report import Report
+from lagrange_multipliers import LagrangeMultipliers
+from common_formula import CommonPolynomeFormula
+from plot import Plot
+
+class Polynome:
+    def __init__(self, data: Data):
+        self.data = data
+        self.report = Report(self)
+        self.common_formula = CommonPolynomeFormula(self.data).policz()
+        self.multipliers = LagrangeMultipliers(data)
+        self.plot = Plot(self)
+
+    def format_common_formula(self):
+        formatted_terms = []
+        for term in self.common_formula.split():
+            if 'e' in term:
+                coeff, exp = term.split('e')
+                formatted_term = f'{coeff} \\times 10^{{{exp}}}'
+            else:
+                formatted_term = term
+            formatted_terms.append(formatted_term)
+
+        formatted_formula = ''
+        for i, term in enumerate(formatted_terms):
+            formatted_formula += term
+            if formatted_formula.endswith(('+', '-')):
+                formatted_formula += '\\\\\\indent'
+        return formatted_formula
+
+    def calc(self, x):
+        tmp = 0
+        for multiplier, data_ in zip(self.multipliers.multipliers, self.data.data):
+            tmp = tmp + multiplier.calc(x) * data_.y
+        return tmp
+
+    @property
+    def value(self):
+        return self.calc(23)
+
+    def __str__(self):
+        return f"{self.data} -> {self.value}"
+
+
+    def __repr__(self):
+        return f"{self.data} -> {self.value}"
+\end{lstlisting}
+Report.py
+\begin{lstlisting}[frame=single]
+import os
+from datetime import datetime
+
+
+class Report:
+    def __init__(self, polynome):
+        self.polynome = polynome
+
+    def save(self):
+        now = datetime.now()
+        current_datetime = now.strftime("%Y%m%d_%H%M%S")
+        filename = f"report_{current_datetime}.tex"
+        file_path = os.path.join('../reports/', filename)
+        with open(file_path, 'w') as f:
+            f.write(self.generate())
+
+    def __generate_multipliers(self):
+        multipliers_view = []
+
+        for multiplier in self.polynome.multipliers.multipliers:
+            multipliers_view.append(f"${multiplier}$")
+        multipliers_view = ' \\\ '.join(multipliers_view)
+        return multipliers_view
+
+    def __generate_p(self):
+        res = "$P(x)="
+        terms = []
+        i = 0
+        for x_y in self.polynome.data.data:
+            terms.append(f"{x_y.y}\cdot l_{i}")
+            i += 1
+        res += "+".join(terms)
+        res += "$"
+        return res
+
+    def generate(self):
+        self.__generate_multipliers()
+        self.polynome.plot.plot()
+        content = f"""\documentclass{{article}}
+        \\usepackage{{polski}}
+        \\usepackage{{graphicx}}
+        \\begin{{document}}
+        
+        Obliczenie najlepszego przybliżenia \sqrt(23):\\\\[0.25cm]
+        \\begin{{align*}}
+        {self.__generate_multipliers()} \\\\[0.25cm]
+        {self.__generate_p()} \\\\[0.25cm]
+        \\end{{align*}}\\\\[0.25cm]
+        Wzór ogólny wielomianu:\\\\[0.25cm]
+        \\begin{{split}}
+        $P(x) =${self.polynome.format_common_formula()}
+        \\end{{split}}
+        
+        \includegraphics{{{self.polynome.plot.filename}}}
+        
+        \\end{{document}}"""
+        return content
+
+    def __str__(self):
+        return self.generate()
+\end{lstlisting}
+Plot.py
+\begin{lstlisting}[frame=single]
+import os
+# jezeli nie dziala
+# pip3 install matplotlib
+# jezeli nie dziala pip3 install matplotlib na sigmie
+# musisz utworzyc virtualenv w pycharm i instalowac w utworzony virtualenv
+import math
+
+import matplotlib.pyplot as plt
+import datetime
+
+
+class Plot:
+    def __init__(self, polynome):
+        self.polynome = polynome
+        self.__filename = None
+
+    @property
+    def filename(self):
+        if not self.__filename:
+            self.__filename = str(datetime.datetime.now().timestamp()) + '.png'
+        return self.__filename
+
+    def calc_points(self, func):
+        end = 25
+        x = []
+        y = []
+        i = 22
+        while i < end:
+            x.append(i)
+            y.append(func(i))
+            i += 0.0001
+        return x, y
+
+    def plot(self):
+        for f in [self.polynome.calc, math.sqrt]:
+            x, y = self.calc_points(f)
+            plt.plot(x, y, label=f)
+            plt.ylabel('Wartosc')
+            plt.xlabel('x')
+
+        with open('../reports/' + self.filename, 'wb') as f:
+            plt.savefig(f)
+\end{lstlisting}
 
 \section*{Bibliografia}
 Danuta Jaruszewska-Walczak - wykład Algorytmy numeryczne
