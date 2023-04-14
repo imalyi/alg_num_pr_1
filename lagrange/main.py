@@ -12,8 +12,8 @@ def main():
     print(f"sqrt(23) = {math.sqrt(23)}")
     for b in best:
         print(b)
-    best[0].report.generate()
-    best[0].report.save()
+    best[-1].report.generate()
+    best[-1].report.save()
 
 
 if __name__ == "__main__":

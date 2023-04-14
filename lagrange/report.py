@@ -35,9 +35,12 @@ class Report:
 
     def generate(self):
         self.__generate_multipliers()
+        self.polynome.plot.plot()
         content = f"""\documentclass{{article}}
         \\usepackage{{polski}}
+        \\usepackage{{graphicx}}
         \\begin{{document}}
+        
         Obliczenie najlepszego przybliżenia \sqrt(23):\\\\[0.25cm]
         \\begin{{align*}}
         {self.__generate_multipliers()} \\\\[0.25cm]
@@ -47,6 +50,9 @@ class Report:
         \\begin{{split}}
         $P(x) =${self.polynome.format_common_formula()}
         \\end{{split}}
+        
+        \includegraphics{{{self.polynome.plot.filename}}}
+        
         \\end{{document}}"""
         return content
 
