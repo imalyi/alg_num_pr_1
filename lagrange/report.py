@@ -51,8 +51,12 @@ class Report:
         $P(x) =${self.polynome.format_common_formula()}
         \\end{{split}}
         
-        \includegraphics{{{self.polynome.plot.filename}}}
-        
+        \\begin{{figure}}[h]
+          \\centering
+          \\includegraphics[width=\\textwidth]{{{self.polynome.plot.filename}}}
+          \\caption{{Wykres}}
+          \\label{{fig:zdjecie1}}
+        \\end{{figure}}      
         \\end{{document}}"""
         return content
 
