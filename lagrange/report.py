@@ -35,20 +35,18 @@ class Report:
 
     def generate(self):
         self.__generate_multipliers()
-        self.polynome.plot.plot()
         content = f"""\documentclass{{article}}
-        \\usepackage{{graphicx}}
+        \\usepackage{{polski}}
         \\begin{{document}}
         Obliczenie najlepszego przybliżenia \sqrt(23):\\\\[0.25cm]
         \\begin{{align*}}
-        {self.__generate_multipliers()} \\\\
-               {self.__generate_p()} \\\\
-        {self.polynome.common_formula} \\\\
-        \includegraphics{{{self.polynome.plot.filename}}}
-
-        
+        {self.__generate_multipliers()} \\\\[0.25cm]
+        {self.__generate_p()} \\\\[0.25cm]
         \\end{{align*}}\\\\[0.25cm]
- 
+        Wzór ogólny wielomianu:\\\\[0.25cm]
+        \\begin{{split}}
+        $P(x) =${self.polynome.format_common_formula()}
+        \\end{{split}}
         \\end{{document}}"""
         return content
 
