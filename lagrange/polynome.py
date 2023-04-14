@@ -13,6 +13,23 @@ class Polynome:
         self.value = 0
         self.__calc()
 
+    def format_common_formula(self):
+        formatted_terms = []
+        for term in self.common_formula.split():
+            if 'e' in term:
+                coeff, exp = term.split('e')
+                formatted_term = f'{coeff} \\times 10^{{{exp}}}'
+            else:
+                formatted_term = term
+            formatted_terms.append(formatted_term)
+
+        formatted_formula = ''
+        for i, term in enumerate(formatted_terms):
+            formatted_formula += term
+            if formatted_formula.endswith(('+', '-')):
+                formatted_formula += '\\\\\\indent'
+        return formatted_formula
+
     def __calc(self):
         for multiplier, data_ in zip(self.multipliers.multipliers, self.data.data):
             self.value = self.value + multiplier.calc(23) * data_.y
