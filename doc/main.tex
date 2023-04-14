@@ -249,14 +249,6 @@ gdzie:\\[0.15cm]\texttt{(1, 1), (4, 2), (64, 8)} to dane wejściowe, które najl
 \section{Kod programu}
 Main.py
 \begin{lstlisting}[frame=single]
-import math
-
-from polynomials import Polynomials
-from getData import import_data
-from math import sqrt
-from plot import Plot
-
-
 def main():
     p = Polynomials(import_data())
     best = p.find_best()
@@ -300,10 +292,6 @@ def import_data():
 
 Lagrangemultiplier.py
 \begin{lstlisting}[frame=single]
-from data import Data
-from multiplier import Multilplier
-
-
 class LagrangeMultiplier:
     def __init__(self, i: int, data: Data):
         self.multipliers = []
@@ -334,11 +322,6 @@ class LagrangeMultiplier:
 
 Lagrangemultipliers.py
 \begin{lstlisting}[frame=single]
-from data import Data
-from data import Data
-from lagrange_multiplier import LagrangeMultiplier
-
-
 class LagrangeMultipliers:
     def __init__(self, data: Data):
         self.multipliers = []
@@ -367,30 +350,13 @@ class Multilplier:
 
 Polynomials.py
 \begin{lstlisting}[frame=single]
-from polynome import Polynome
-from math import sqrt
-from data import DataSets
-
 
 class Polynomials:
-    """
-    A class that represents a collection of polynomial objects that can be used to find the best polynomial
-    approximation for a given set of data.
-    """
 
     def __init__(self, datasets: list):
-        """
-        Initializes an object of the Polynomials class with a single parameter - datasets.
-        :param datasets: A DataSets object containing a list of data points.
-        """
         self.datasets = DataSets(datasets)
 
     def find_best(self):
-        """
-        Computes a set of polynomial objects for each dataset in the Polynomials object and returns the best
-        polynomial approximation for the dataset.
-        :return: A polynomial object that best approximates the dataset.
-        """
         polynomials = []
         for data in self.datasets:
             p = Polynome(data)
@@ -401,12 +367,6 @@ class Polynomials:
 \end{lstlisting}
 Polynome.py
 \begin{lstlisting}[frame=single]
-from data import Data
-from report import Report
-from lagrange_multipliers import LagrangeMultipliers
-from common_formula import CommonPolynomeFormula
-from plot import Plot
-
 class Polynome:
     def __init__(self, data: Data):
         self.data = data
@@ -451,10 +411,6 @@ class Polynome:
 \end{lstlisting}
 Report.py
 \begin{lstlisting}[frame=single]
-import os
-from datetime import datetime
-
-
 class Report:
     def __init__(self, polynome):
         self.polynome = polynome
@@ -514,17 +470,6 @@ class Report:
 \end{lstlisting}
 Plot.py
 \begin{lstlisting}[frame=single]
-import os
-# jezeli nie dziala
-# pip3 install matplotlib
-# jezeli nie dziala pip3 install matplotlib na sigmie
-# musisz utworzyc virtualenv w pycharm i instalowac w utworzony virtualenv
-import math
-
-import matplotlib.pyplot as plt
-import datetime
-
-
 class Plot:
     def __init__(self, polynome):
         self.polynome = polynome
